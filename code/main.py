@@ -1,6 +1,6 @@
 import os
 import argparse
-import imageio
+
 from skimage.feature import match
 from feature_extraction import *
 from match import *
@@ -66,7 +66,7 @@ def parseArg():
         help='image preprocessing (caffe or torch)'
     )
     parser.add_argument(
-        '--model_file', type=str, default='code/models/d2_ots.pth',
+        '--model_file', type=str, default='code/models/d2_tf_no_phototourism.pth',
         help='path to the full model'
     )
 
