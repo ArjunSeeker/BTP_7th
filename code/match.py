@@ -7,7 +7,7 @@ from skimage.transform import ProjectiveTransform
 from homo import *
 from stitch import stitch
 
-def  stitch_images(args, image1, feat1, image2, feat2, count):
+def  stitch_images(args, image1, feat1, image2, feat2, count, len_input_image_list):
     matches = match_descriptors(feat1['descriptors'], feat2['descriptors'], cross_check=True)
     print('Number of raw matches: %d.' % matches.shape[0])
 
@@ -36,4 +36,4 @@ def  stitch_images(args, image1, feat1, image2, feat2, count):
     (H, status) = M
 
     #Stitch the given two images together
-    stitch(image1, image2, H, count)
+    stitch(image1, image2, H, count, len_input_image_list)

@@ -28,7 +28,7 @@ def features(args, image, features_path, count):
     size = args.max_edge/max(resized_image.shape)
     if max(resized_image.shape) > args.max_edge:
         # size = tuple(np.array(h * args.max_edge/max(resized_image.shape), w * args.max_edge/max(resized_image.shape)).astype(int))
-        resized_image = np.array(Image.fromarray(resized_image).resize((int(args.max_edge), int(args.max_edge)), Image.BILINEAR))
+        resized_image = np.array(Image.fromarray(resized_image).resize((int(w*size), int(h(size))), Image.BILINEAR))
     
     if sum(resized_image.shape[: 2]) > args.max_sum_edges:
         size = tuple(np.array(args.max_sum_edges/sum(resized_image.shape[: 2])).astype(int))

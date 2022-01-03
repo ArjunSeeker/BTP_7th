@@ -3,9 +3,14 @@ import cv2
 import os
 import imutils
 
-def stitch(image1, image2, H, count):    
-    rows1, cols1 = image2.shape[:2]
-    rows2, cols2 = image1.shape[:2]
+def stitch(image1, image2, H, count, len_input_image_list):    
+    if count<len_input_image_list:
+        rows1, cols1 = image2.shape[:2]
+        rows2, cols2 = image1.shape[:2]
+    else:
+        rows1, cols1 = image1.shape[:2]
+        rows2, cols2 = image2.shape[:2]
+
 
     list_of_points_1 = np.float32([[0,0], [0, rows1],[cols1, rows1], [cols1, 0]]).reshape(-1, 1, 2)
     temp_points = np.float32([[0,0], [0,rows2], [cols2,rows2], [cols2,0]]).reshape(-1,1,2)
@@ -23,9 +28,14 @@ def stitch(image1, image2, H, count):
     
     H_translation = np.array([[1, 0, translation_dist[0]], [0, 1, translation_dist[1]], [0, 0, 1]])
 
-    output_img = cv2.warpPerspective(image1, H_translation.dot(H), (x_max-x_min, y_max-y_min))
-    print(output_img.shape)
-    output_img[translation_dist[1]:rows1+translation_dist[1], translation_dist[0]:cols1+translation_dist[0]] = image2
+    if count<len_input_image_list:
+        output_img = cv2.warpPerspective(image1, H_translation.dot(H), (x_max-x_min, y_max-y_min))
+        print(output_img.shape)
+        output_img[translation_dist[1]:rows1+translation_dist[1], translation_dist[0]:cols1+translation_dist[0]] = image2
+    else:
+        output_img = cv2.warpPerspective(image2, H_translation.dot(H), (x_max-x_min, y_max-y_min))
+        print(output_img.shape)
+        output_img[translation_dist[1]:rows1+translation_dist[1], translation_dist[0]:cols1+translation_dist[0]] = image1
     
     gray = cv2.cvtColor(output_img, cv2.COLOR_BGR2GRAY)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY)[1]

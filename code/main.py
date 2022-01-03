@@ -23,6 +23,7 @@ def main(args):
     for image_path in os.listdir(input_image_path):
         path = os.path.join(input_image_path, image_path)
         input_images_list.append(cv2.imread(path))
+    len_input_image_list = len(input_images_list)
     count = 1
     
     image1 = input_images_list[0]
@@ -33,7 +34,7 @@ def main(args):
     image2 = input_images_list[1]
     features(args, image2, image_features_path, count)
     feat2 = np.load(os.path.join(image_features_path,'features')+str(count)+args.output_extension)
-    stitch_images(args, image1, feat1, image2, feat2, count)
+    stitch_images(args, image1, feat1, image2, feat2, count, len_input_image_list)
     count += 1
     SI_path = os.path.join('stitched_images','SI')
     for index in range(2,len(input_images_list)):
@@ -46,7 +47,7 @@ def main(args):
         image2 = input_images_list[index]
         features(args, image2, image_features_path, count)
         feat2 = np.load(os.path.join(image_features_path,'features') + str(count) + args.output_extension)
-        stitch_images(args, image1, feat1, image2, feat2, count)
+        stitch_images(args, image1, feat1, image2, feat2, count, len_input_image_list)
         count += 1
 
 
@@ -71,11 +72,11 @@ def parseArg():
     )
 
     parser.add_argument(
-        '--max_edge', type=int, default=600,
+        '--max_edge', type=int, default=1600,
         help='maximum image size at network input'
     )
     parser.add_argument(
-        '--max_sum_edges', type=int, default=1800,
+        '--max_sum_edges', type=int, default=2800,
         help='maximum sum of image sizes at network input'
     )
 
