@@ -1,3 +1,5 @@
 .vscode
 my_venv
 git
+__pycache__
+multi_stitch.py

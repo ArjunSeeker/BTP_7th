@@ -8,6 +8,7 @@ from PIL import Image
 import scipy
 
 def features(args, image, features_path, count):
+# def features(args, image):
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda:0" if use_cuda else "cpu")
 
@@ -25,14 +26,13 @@ def features(args, image, features_path, count):
     
     resized_image = image
     [w, h] = image.shape[: 2]
-    size = args.max_edge/max(resized_image.shape)
     if max(resized_image.shape) > args.max_edge:
-        # size = tuple(np.array(h * args.max_edge/max(resized_image.shape), w * args.max_edge/max(resized_image.shape)).astype(int))
-        resized_image = np.array(Image.fromarray(resized_image).resize((int(w*size), int(h(size))), Image.BILINEAR))
+        size = args.max_edge/max(resized_image.shape)
+        resized_image = np.array(Image.fromarray(resized_image).resize((int(h*size), int(w*size)), Image.BILINEAR))
     
-    if sum(resized_image.shape[: 2]) > args.max_sum_edges:
-        size = tuple(np.array(args.max_sum_edges/sum(resized_image.shape[: 2])).astype(int))
-        resized_image = np.array(Image.fromarray(resized_image).resize(size, Image.BILINEAR))
+    # if sum(resized_image.shape[: 2]) > args.max_sum_edges:
+    #     size = tuple(np.array(args.max_sum_edges/sum(resized_image.shape[: 2])).astype(int))
+    #     resized_image = np.array(Image.fromarray(resized_image).resize(size, Image.BILINEAR))
     
     fact_i = image.shape[0] / resized_image.shape[0]
     fact_j = image.shape[1] / resized_image.shape[1]
@@ -51,6 +51,7 @@ def features(args, image, features_path, count):
     keypoints[:, 0] *= fact_i
     keypoints[:, 1] *= fact_j
     keypoints = keypoints[:, [1, 0, 2]]
+    # return keypoints, descriptors
     if args.output_type == 'npz':
         with open(os.path.join(features_path,'features')+str(count) + args.output_extension, 'wb') as output_file:
             np.savez(

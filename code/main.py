@@ -51,10 +51,6 @@ def main(args):
         count += 1
 
 
-
-
-
-
 def parseArg():
     parser = argparse.ArgumentParser(description='Feature extraction script')
     parser.add_argument(
@@ -67,12 +63,12 @@ def parseArg():
         help='image preprocessing (caffe or torch)'
     )
     parser.add_argument(
-        '--model_file', type=str, default='code/models/d2_tf_no_phototourism.pth',
+        '--model_file', type=str, default='code/models/d2_tf.pth',
         help='path to the full model'
     )
 
     parser.add_argument(
-        '--max_edge', type=int, default=1600,
+        '--max_edge', type=int, default=1200,
         help='maximum image size at network input'
     )
     parser.add_argument(
